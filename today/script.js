@@ -44,5 +44,6 @@ window.addEventListener('DOMContentLoaded', () => {
         timer.textContent = `До нового года осталось ${changheStringDay(leftNewYear)}`;
     };
 
-    dateTime();
+    setInterval(dateTime, 1000);
 });
+
