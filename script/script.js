@@ -127,7 +127,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             },
             closePopUp = () => {
-                console.log(count);
                 idClosePopUp = requestAnimationFrame(closePopUp);
                 if (count > 0) {
                     popup.style.opacity = `${count -= 0.1})`;
