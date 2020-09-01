@@ -8,6 +8,9 @@ window.addEventListener('DOMContentLoaded', () => {
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
+        // eslint-disable-next-line prefer-const
+        let idInterval;
+
         const addZero = n => (n < 10 ? `0${n}` : n),
             getTimeRemaning = () => {
                 const dateStop = new Date(deadline).getTime(),
@@ -27,9 +30,6 @@ window.addEventListener('DOMContentLoaded', () => {
             updateClock = () => {
                 const timer = getTimeRemaning();
 
-
-                const idInterval = setInterval(updateClock, 1000);
-
                 if (timer.timeRemaining > 0) {
                     timerHours.textContent = addZero(timer.hours);
                     timerMinutes.textContent = addZero(timer.minutes);
@@ -41,11 +41,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     clearInterval(idInterval);
                 }
             };
-
-        updateClock();
+        idInterval = setInterval(updateClock, 1000);
     };
 
-    countTimer('01 september 2020');
+    countTimer('02 september 2020');
 
 
     // Меню
@@ -154,6 +153,6 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
     togglePopUp();
+    window.addEventListener('resize', togglePopUp);
 });
