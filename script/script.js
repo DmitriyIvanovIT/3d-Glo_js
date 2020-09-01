@@ -139,7 +139,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         popupBtn.forEach(item => {
             item.addEventListener('click', () => {
-                if (window.screen.width > 780) {
+                if (window.screen.width > 768) {
                     openPopUp();
                 } else {
                     popup.style.display = 'block';
@@ -147,7 +147,7 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
         popupClose.addEventListener('click', () => {
-            if (window.screen.width > 780) {
+            if (window.screen.width > 768) {
                 closePopUp();
             } else {
                 popup.style.display = '';
