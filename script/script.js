@@ -56,44 +56,8 @@ window.addEventListener('DOMContentLoaded', () => {
             menuItems = menu.querySelectorAll('ul>li'),
             mainBtn = document.querySelector('main>a');
 
-        let count = 100;
-
-        let idOpenMenu,
-            idCloseMenu;
-
-
-        const openMenu = () => {
-
-                idOpenMenu = requestAnimationFrame(openMenu);
-                if (count > 0) {
-                    menu.style.transform = `translate(-${count -= 10}%)`;
-                } else {
-                    cancelAnimationFrame(idOpenMenu);
-                }
-            },
-            closeMenu = () => {
-                idCloseMenu = requestAnimationFrame(closeMenu);
-                if (count < 100) {
-                    menu.style.transform = `translate(-${count += 10}%)`;
-                } else {
-                    cancelAnimationFrame(idCloseMenu);
-                }
-            },
-            actionMenu = () => {
-                if (!menu.style.transform || menu.style.transform === `translate(-100%)`) {
-                    if (window.screen.width > 780) {
-                        openMenu();
-                    } else {
-                        menu.style.transform = `translate(0)`;
-                    }
-
-                } else {
-                    if (window.screen.width > 780) {
-                        closeMenu();
-                    } else {
-                        menu.style.transform = `translate(-100%)`;
-                    }
-                }
+        const actionMenu = () => {
+                menu.classList.toggle('active-menu');
             },
             scrollPage = (e, elem) => {
                 e.preventDefault();
@@ -148,8 +112,47 @@ window.addEventListener('DOMContentLoaded', () => {
             popupBtn = document.querySelectorAll('.popup-btn'),
             popupClose = document.querySelector('.popup-close');
 
-        popupBtn.forEach(item => item.addEventListener('click', () => popup.style.display = 'block'));
-        popupClose.addEventListener('click', () => popup.style.display = '');
+        let count = 0;
+
+        let idOpenPopUp,
+            idClosePopUp;
+
+        const openPopUp = () => {
+                popup.style.display = 'block';
+                idOpenPopUp = requestAnimationFrame(openPopUp);
+                if (count < 1) {
+                    popup.style.opacity = `${count += 0.05}`;
+                } else {
+                    cancelAnimationFrame(idOpenPopUp);
+                }
+            },
+            closePopUp = () => {
+                console.log(count);
+                idClosePopUp = requestAnimationFrame(closePopUp);
+                if (count > 0) {
+                    popup.style.opacity = `${count -= 0.1})`;
+                } else {
+                    popup.style.display = '';
+                    cancelAnimationFrame(idClosePopUp);
+                }
+            };
+
+        popupBtn.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.screen.width > 780) {
+                    openPopUp();
+                } else {
+                    popup.style.display = 'block';
+                }
+            });
+        });
+        popupClose.addEventListener('click', () => {
+            if (window.screen.width > 780) {
+                closePopUp();
+            } else {
+                popup.style.display = '';
+            }
+        });
     };
 
     togglePopUp();
