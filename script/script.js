@@ -53,7 +53,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const btnMenu = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
             closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menuItems = menu.querySelectorAll('ul>li'),
+            mainBtn = document.querySelector('main>a');
 
         let count = 100;
 
@@ -93,13 +94,50 @@ window.addEventListener('DOMContentLoaded', () => {
                         menu.style.transform = `translate(-100%)`;
                     }
                 }
+            },
+            scrollPage = function(e, elem) {
+                e.preventDefault();
+                const w = window.pageYOffset,
+                    hash = elem.href.replace(/[^#]*(.*)/, '$1');
+
+                const t = document.querySelector(hash).getBoundingClientRect().top;
+
+                let start = null;
+
+                const step = time => {
+                    if (start === null) {
+                        start = time;
+                    }
+
+                    const progress = time - start,
+                        r = (t < 0 ? Math.max(w - progress / 0.5, w + t) : Math.min(w + progress / 0.5, w + t));
+                    window.scrollTo(0, r);
+                    if (r !== w + t) {
+                        requestAnimationFrame(step);
+                    } else {
+                        location.hash = hash;
+                    }
+                };
+
+                requestAnimationFrame(step);
+
             };
 
         btnMenu.addEventListener('click', actionMenu);
 
         closeBtn.addEventListener('click', actionMenu);
 
-        menuItems.forEach(item => item.addEventListener('click', actionMenu));
+        menuItems.forEach(item => {
+            item.addEventListener('click', event => {
+                const link = item.querySelector('a');
+                actionMenu();
+                scrollPage(event, link);
+            });
+        });
+
+        mainBtn.addEventListener('click', event => {
+            scrollPage(event, mainBtn);
+        });
     };
 
     toggleMenu();
