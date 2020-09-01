@@ -95,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             },
-            scrollPage = function(e, elem) {
+            scrollPage = (e, elem) => {
                 e.preventDefault();
                 const w = window.pageYOffset,
                     hash = elem.href.replace(/[^#]*(.*)/, '$1');
