@@ -110,9 +110,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const togglePopUp = () => {
         const popup = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelector('.popup-close');
+            popupClose = document.querySelector('.popup-close'),
+            popupContent = document.querySelector('.popup-content');
 
-        let count = 0;
+        let count = 100;
 
         let idOpenPopUp,
             idClosePopUp;
@@ -120,16 +121,16 @@ window.addEventListener('DOMContentLoaded', () => {
         const openPopUp = () => {
                 popup.style.display = 'block';
                 idOpenPopUp = requestAnimationFrame(openPopUp);
-                if (count < 1) {
-                    popup.style.opacity = `${count += 0.05}`;
+                if (count > 0) {
+                    popupContent.style.transform = `translate(-${count -= 10}%)`;
                 } else {
                     cancelAnimationFrame(idOpenPopUp);
                 }
             },
             closePopUp = () => {
                 idClosePopUp = requestAnimationFrame(closePopUp);
-                if (count > 0) {
-                    popup.style.opacity = `${count -= 0.1})`;
+                if (count < 100) {
+                    popupContent.style.transform = `translate(-${count += 10}%)`;
                 } else {
                     popup.style.display = '';
                     cancelAnimationFrame(idClosePopUp);
