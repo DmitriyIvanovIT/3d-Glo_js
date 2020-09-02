@@ -137,6 +137,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (window.screen.width > 768) {
                     openPopUp();
                 } else {
+                    popupContent.style.left = '';
                     popup.style.display = 'block';
                 }
             });
