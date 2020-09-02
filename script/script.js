@@ -2,6 +2,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
     'use strict';
 
+    const body = document.querySelector('body');
+
     // Timer
     const countTimer = deadline => {
         const timerHours = document.querySelector('#timer-hours'),
@@ -49,10 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Меню
     const toggleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            menuItems = menu.querySelectorAll('ul>li'),
-            mainBtn = document.querySelector('main>a');
+        const menu = document.querySelector('menu');
 
         const actionMenu = () => {
                 menu.classList.toggle('active-menu');
@@ -85,25 +84,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
             };
 
-        btnMenu.addEventListener('click', actionMenu);
-
-        menu.addEventListener('click', event => {
-            const target = event.target;
-
-            if (target.closest('ul>li') || target.classList.contains('close-btn')) {
+        body.addEventListener('click', event => {
+            let target = event.target;
+            if (target.closest('menu>ul>li') ||
+            target.classList.contains('close-btn') ||
+            target.closest('.menu') ||
+            (!target.closest('menu') && menu.classList.contains('active-menu'))) {
                 actionMenu();
             }
-        });
 
-        menuItems.forEach(item => {
-            item.addEventListener('click', event => {
-                const link = item.querySelector('a');
-                scrollPage(event, link);
-            });
-        });
-
-        mainBtn.addEventListener('click', event => {
-            scrollPage(event, mainBtn);
+            if (target.closest('menu>ul>li') || target.closest('main>a')) {
+                target = target.closest('main>a') ? target.closest('main>a') : target;
+                scrollPage(event, target);
+            }
         });
     };
 
