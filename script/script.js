@@ -87,9 +87,9 @@ window.addEventListener('DOMContentLoaded', () => {
         body.addEventListener('click', event => {
             let target = event.target;
             if (target.closest('menu>ul>li') ||
-            target.classList.contains('close-btn') ||
-            target.closest('.menu') ||
-            (!target.closest('menu') && menu.classList.contains('active-menu'))) {
+                target.classList.contains('close-btn') ||
+                target.closest('.menu') ||
+                (!target.closest('menu') && menu.classList.contains('active-menu'))) {
                 actionMenu();
             }
 
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
             popupBtn = document.querySelectorAll('.popup-btn'),
             popupContent = document.querySelector('.popup-content');
 
-        let count = 100;
+        let count = 0;
 
         let idOpenPopUp,
             idClosePopUp;
@@ -116,16 +116,16 @@ window.addEventListener('DOMContentLoaded', () => {
         const openPopUp = () => {
                 popup.style.display = 'block';
                 idOpenPopUp = requestAnimationFrame(openPopUp);
-                if (count > 0) {
-                    popupContent.style.transform = `translate(-${count -= 10}%)`;
+                if (count < 38) {
+                    popupContent.style.left = `${count += 2}%`;
                 } else {
                     cancelAnimationFrame(idOpenPopUp);
                 }
             },
             closePopUp = () => {
                 idClosePopUp = requestAnimationFrame(closePopUp);
-                if (count < 100) {
-                    popupContent.style.transform = `translate(-${count += 10}%)`;
+                if (count > 0) {
+                    popupContent.style.left = `${count -= 2}%`;
                 } else {
                     popup.style.display = '';
                     cancelAnimationFrame(idClosePopUp);
