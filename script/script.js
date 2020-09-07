@@ -291,4 +291,40 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     slider();
+
+    const changeImage = () => {
+        const img = document.querySelectorAll('.command__photo');
+
+        const changeImg = item => {
+            const src = item.src;
+
+            item.src = item.dataset.img;
+            item.dataset.img = src;
+        };
+
+        img.forEach(item => {
+            item.addEventListener('mouseover', () => changeImg(item));
+            item.addEventListener('mouseout', () => changeImg(item));
+        });
+    };
+
+    changeImage();
+
+    const valid = () => {
+        const inputs = document.querySelectorAll('input.calc-item');
+
+        const validMethod = item => {
+            const reg = /[0-9]/;
+
+            if (!reg.test(item.value)) {
+                item.value = item.value.replace(/[^0-9]/i, '');
+            }
+        };
+
+        inputs.forEach(item => {
+            item.addEventListener('input', () => validMethod(item));
+        });
+    };
+
+    valid();
 });
