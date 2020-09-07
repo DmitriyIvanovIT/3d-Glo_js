@@ -313,16 +313,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const valid = () => {
         const inputs = document.querySelectorAll('input.calc-item');
 
-        const validMethod = item => {
-            const reg = /[0-9]/;
-
-            if (!reg.test(item.value)) {
-                item.value = item.value.replace(/[^0-9]/i, '');
-            }
-        };
-
         inputs.forEach(item => {
-            item.addEventListener('input', () => validMethod(item));
+            item.addEventListener('input', () => item.value = item.value.replace(/\D/g, ''));
         });
     };
 
