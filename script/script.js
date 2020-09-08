@@ -331,6 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
             calcDay = document.querySelector('.calc-day'),
             totalValue = document.getElementById('total');
 
+
         const countSum = () => {
             let total = 0,
                 countValue = 1,
@@ -338,6 +339,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
+
+            let idAnimateCalc,
+                count = 0;
+
+            const animateCalc = () => {
+                idAnimateCalc = requestAnimationFrame(animateCalc);
+
+                if (count < total) {
+                    if ((total - count) >= 10) {
+                        count += Math.round(1 - 0.5 + Math.random() * (9 - 1 + 1));
+                    } else {
+                        count += total - count;
+                    }
+
+                    totalValue.textContent = count;
+                } else {
+                    cancelAnimationFrame(idAnimateCalc);
+                }
+            };
 
             if (calcCount.value > 1) {
                 countValue += (calcCount.value - 1) / 10;
@@ -351,9 +371,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
+                animateCalc();
+                // totalValue.textContent = total;
+            } else {
+                totalValue.textContent = total;
             }
-
-            totalValue.textContent = total;
         };
 
         calcBlock.addEventListener('change', event => {
