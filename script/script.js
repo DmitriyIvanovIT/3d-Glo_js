@@ -361,7 +361,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 if (count < total) {
                     if ((total - count) >= 10) {
-                        count += Math.round(6 - 0.5 + Math.random() * (15 - 6 + 1));
+                        count += Math.round(1 - 0.5 + Math.random() * (((total - count) / 2) - 1 + 1));
                     } else {
                         count += total - count;
                     }
