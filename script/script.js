@@ -370,7 +370,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             if (typeValue && squareValue) {
-                total = price * typeValue * squareValue * countValue * dayValue;
+                total = Math.round(price * typeValue * squareValue * countValue * dayValue);
                 animateCalc();
             } else {
                 totalValue.textContent = total;
