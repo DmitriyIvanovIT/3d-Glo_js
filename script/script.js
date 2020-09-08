@@ -333,22 +333,35 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
         const countSum = () => {
-            let total = 0,
-                countValue = 1,
-                dayValue = 1;
+            let idAnimateCalc,
+                count = 0;
+
+            let total = 0;
 
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
-            let idAnimateCalc,
-                count = 0;
-
             const animateCalc = () => {
                 idAnimateCalc = requestAnimationFrame(animateCalc);
+                let countValue = 1,
+                    dayValue = 1;
+
+                if (calcCount.value > 1) {
+                    console.log(calcCount.value);
+                    countValue += (calcCount.value - 1) / 10;
+                }
+
+                if (calcDay.value && calcDay.value < 5) {
+                    dayValue *= 2;
+                } else if (calcDay.value && calcDay.value < 10) {
+                    dayValue *= 1.5;
+                }
+
+                total = Math.round(price * typeValue * squareValue * countValue * dayValue);
 
                 if (count < total) {
                     if ((total - count) >= 10) {
-                        count += Math.round(1 - 0.5 + Math.random() * (9 - 1 + 1));
+                        count += Math.round(6 - 0.5 + Math.random() * (15 - 6 + 1));
                     } else {
                         count += total - count;
                     }
@@ -359,19 +372,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            if (calcCount.value > 1) {
-                countValue += (calcCount.value - 1) / 10;
-            }
-
-            if (calcDay.value && calcDay.value < 5) {
-                dayValue *= 2;
-            } else if (calcDay.value && calcDay.value < 10) {
-                dayValue *= 1.5;
-            }
-
             if (typeValue && squareValue) {
-                total = Math.round(price * typeValue * squareValue * countValue * dayValue);
                 animateCalc();
+
             } else {
                 totalValue.textContent = total;
             }
