@@ -372,7 +372,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
                 animateCalc();
-                // totalValue.textContent = total;
             } else {
                 totalValue.textContent = total;
             }
