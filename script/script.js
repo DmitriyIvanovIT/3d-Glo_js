@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
     'use strict';
@@ -439,7 +440,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     validForm2.init();
 
-    const validForm3 = new Validator({
+    const validForm3 = new Validator ({
         selector: '#form3',
         pattern: {},
         method: {
