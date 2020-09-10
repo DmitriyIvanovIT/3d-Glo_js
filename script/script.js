@@ -317,7 +317,10 @@ window.addEventListener('DOMContentLoaded', () => {
         const inputs = document.querySelectorAll('input.calc-item'),
             phoneInputs = document.querySelectorAll('[type = tel]'),
             textInputs = document.querySelectorAll('[name="user_name"]'),
-            textMessage = document.querySelector('[name="user_message"]');
+            textMessage = document.querySelector('[name="user_message"]'),
+            forms = document.querySelectorAll('form');
+
+        forms.forEach(item => item.autocomplete = "off");
 
         const validText = item => {
             item.value = item.value.replace(/[^А-Яа-яЁё ]/i, '');
@@ -331,6 +334,7 @@ window.addEventListener('DOMContentLoaded', () => {
                             btnForm = thisForm.querySelector('button');
 
                         const regExp = /^\+?[78]([-()]*\d){10}$/;
+
                         if (!regExp.test(phoneInput.value)) {
                             phoneInput.style.border = '2px solid red';
                             btnForm.disabled = true;
