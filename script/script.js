@@ -314,10 +314,42 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Валидация
     const valid = () => {
-        const inputs = document.querySelectorAll('input.calc-item');
+        const inputs = document.querySelectorAll('input.calc-item'),
+            phoneInputs = document.querySelectorAll('[type = tel]'),
+            textInputs = document.querySelectorAll('[name="user_name"]'),
+            textMessage = document.querySelector('[name="user_message"]');
+
+        const validText = item => {
+            item.value = item.value.replace(/[^А-Яа-яЁё ]/i, '');
+        };
+
+        phoneInputs.forEach(phoneInput => {
+            phoneInput.addEventListener('input', () => {
+                phoneInput.value = phoneInput.value.replace(/[^+0-9]/i, '');
+                if (phoneInput.value[0] === '+') {
+                    if (phoneInput.value.length > 12) {
+                        phoneInput.value = phoneInput.value.slice(0, 12);
+                    }
+                } else {
+                    if (phoneInput.value.length > 11) {
+                        phoneInput.value = phoneInput.value.slice(0, 11);
+                    }
+                }
+            });
+        });
 
         inputs.forEach(item => {
             item.addEventListener('input', () => item.value = item.value.replace(/\D/g, ''));
+        });
+
+        textInputs.forEach(item => {
+            item.addEventListener('input', () => {
+                validText(item);
+            });
+        });
+
+        textMessage.addEventListener('input', () => {
+            validText(textMessage);
         });
     };
 
@@ -392,4 +424,66 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     calc(100);
+
+    // Send-ajax-form
+
+    const sendForm = () => {
+        const errorrMessage = 'Что то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+        // const form = document.getElementById('form1');
+        const forms = document.querySelectorAll('form');
+
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: green; 
+        text-shadow: 1px 1px 2px black, 0 0 1em black;`;
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            request.send(JSON.stringify(body));
+        };
+
+        forms.forEach(form => {
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                form.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
+                const formData = new FormData(form);
+                const body = {};
+
+                formData.forEach((item, key) => body[key] = item);
+
+                postData(body, () => {
+                    statusMessage.textContent = successMessage;
+                    form.reset();
+                }, error => {
+                    statusMessage.textContent = errorrMessage;
+                    statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: red; 
+                    text-shadow: 1px 1px 2px black, 0 0 1em black;`;
+                    console.error(error);
+                });
+            });
+        });
+
+
+
+    };
+
+    sendForm();
 });
