@@ -429,10 +429,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const sendForm = () => {
         const errorrMessage = 'Что то пошло не так...',
-            loadMessage = 'Загрузка...',
+            loadMessage = '`<h2 class="animate">Loading</h2>`',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-        // const form = document.getElementById('form1');
         const forms = document.querySelectorAll('form');
 
         const statusMessage = document.createElement('div');
@@ -463,7 +462,7 @@ window.addEventListener('DOMContentLoaded', () => {
             form.addEventListener('submit', event => {
                 event.preventDefault();
                 form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
+                statusMessage.innerHTML = loadMessage;
                 const formData = new FormData(form);
                 const body = {};
 
