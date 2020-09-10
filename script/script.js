@@ -325,15 +325,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
         phoneInputs.forEach(phoneInput => {
             phoneInput.addEventListener('input', () => {
-                phoneInput.value = phoneInput.value.replace(/[^+0-9]/i, '');
-                if (phoneInput.value[0] === '+') {
-                    if (phoneInput.value.length > 12) {
-                        phoneInput.value = phoneInput.value.slice(0, 12);
-                    }
+                const thisForm = phoneInput.closest('form'),
+                    btnForm = thisForm.querySelector('button');
+
+                const regExp = /^\+?[78]([-()]*\d){10}$/;
+                if (!regExp.test(phoneInput.value)) {
+                    phoneInput.style.border = '2px solid red';
+                    btnForm.disabled = true;
                 } else {
-                    if (phoneInput.value.length > 11) {
-                        phoneInput.value = phoneInput.value.slice(0, 11);
-                    }
+                    phoneInput.style.border = '';
+                    btnForm.disabled = false;
                 }
             });
         });
