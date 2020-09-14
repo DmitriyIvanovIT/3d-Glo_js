@@ -438,7 +438,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const sendForm = () => {
         const errorrMessage = 'Что то пошло не так...',
-            loadMessage = '`<h2 class="animate">Loading</h2>`',
+            loadMessage = '<h2 class="animate">Loading</h2>',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
         const forms = document.querySelectorAll('form');
@@ -447,7 +447,7 @@ window.addEventListener('DOMContentLoaded', () => {
         statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: green; 
         text-shadow: 1px 1px 2px black, 0 0 1em black;`;
 
-        const postData = (body, outputData, errorData) => {
+        const postData = body => new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
                 if (request.readyState !== 4) {
@@ -455,9 +455,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (request.status === 200) {
-                    outputData();
+                    resolve();
                 } else {
-                    errorData(request.status);
+                    reject(request.status);
                 }
             });
 
@@ -465,7 +465,7 @@ window.addEventListener('DOMContentLoaded', () => {
             request.setRequestHeader('Content-Type', 'application/json');
 
             request.send(JSON.stringify(body));
-        };
+        });
 
         forms.forEach(form => {
             form.addEventListener('submit', event => {
@@ -477,19 +477,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 formData.forEach((item, key) => body[key] = item);
 
-                postData(body, () => {
-                    statusMessage.textContent = successMessage;
-                    form.reset();
-                }, error => {
-                    statusMessage.textContent = errorrMessage;
-                    statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: red; 
-                    text-shadow: 1px 1px 2px black, 0 0 1em black;`;
-                    console.error(error);
-                });
+                postData(body)
+                    .then(() => {
+                        statusMessage.textContent = successMessage;
+                        form.reset();
+                    })
+                    .catch(error => {
+                        statusMessage.textContent = errorrMessage;
+                        statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: red; 
+                        text-shadow: 1px 1px 2px black, 0 0 1em black;`;
+                        console.error(error);
+                    });
             });
         });
-
-
 
     };
 
