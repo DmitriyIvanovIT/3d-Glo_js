@@ -447,24 +447,12 @@ window.addEventListener('DOMContentLoaded', () => {
         statusMessage.style.cssText = `font-size: 2rem; font-weight: bolder; color: green; 
         text-shadow: 1px 1px 2px black, 0 0 1em black;`;
 
-        const postData = body => new Promise((resolve, reject) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-
-                if (request.status === 200) {
-                    resolve();
-                } else {
-                    reject(request.status);
-                }
-            });
-
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            request.send(JSON.stringify(body));
+        const postData = body => fetch('./server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
         });
 
         forms.forEach(form => {
@@ -473,12 +461,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 form.appendChild(statusMessage);
                 statusMessage.innerHTML = loadMessage;
                 const formData = new FormData(form);
-                const body = {};
 
-                formData.forEach((item, key) => body[key] = item);
-
-                postData(body)
-                    .then(() => {
+                postData(formData)
+                    .then(response => {
+                        if (response.status !== 200) {
+                            throw new Error(`status network ${response.status}!`);
+                        }
                         statusMessage.textContent = successMessage;
                         form.reset();
                     })
@@ -488,9 +476,12 @@ window.addEventListener('DOMContentLoaded', () => {
                         text-shadow: 1px 1px 2px black, 0 0 1em black;`;
                         console.error(error);
                     });
+
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 8000);
             });
         });
-
     };
 
     sendForm();
