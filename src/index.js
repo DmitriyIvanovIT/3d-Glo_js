@@ -1,5 +1,15 @@
 // eslint-disable-next-line strict
 'use strict';
+import "@babel/polyfill";
+import 'nodelist-foreach-polyfill';
+import elementClosest from 'element-closest';
+import 'formdata-polyfill';
+import 'fetch-polyfill';
+import 'element-remove-polyfill';
+
+const Promise = require('es6-promise').Promise;
+
+elementClosest(window);
 
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
