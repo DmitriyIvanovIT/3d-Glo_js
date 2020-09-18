@@ -23,6 +23,7 @@ const sendForm = () => {
             form.appendChild(statusMessage);
             statusMessage.innerHTML = loadMessage;
             const formData = new FormData(form);
+            console.log(formData);
 
             postData(formData)
                 .then(response => {
